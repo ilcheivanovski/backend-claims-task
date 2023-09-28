@@ -10,9 +10,7 @@ namespace Claims.Services.Claims
     {
         public class Request : IRequest<Response>
         {
-            public string Id { get; set; }
             public string CoverId { get; set; }
-            public DateTime Created { get; set; }
             public string Name { get; set; }
             public ClaimType Type { get; set; }
             public decimal DamageCost { get; set; }
@@ -22,7 +20,7 @@ namespace Claims.Services.Claims
         {
             public Validator()
             {
-                RuleFor(x => x.DamageCost).NotEmpty();
+                RuleFor(x => x.DamageCost).NotEmpty().ExclusiveBetween(0, 100001);
             }
         }
 
@@ -41,14 +39,12 @@ namespace Claims.Services.Claims
         public class Handle : IRequestHandler<Request, Response>
         {
             private readonly ICosmosDbService _cosmosDbService;
-            private readonly Auditer _auditer;
-            private readonly IValidator _validator;
+            private readonly IAuditer _auditer;
 
-            public Handle(AuditContext auditContext, ICosmosDbService cosmosDbService, IValidator<Request> validator)
+            public Handle(ICosmosDbService cosmosDbService, IAuditer auditer)
             {
-                _auditer = new Auditer(auditContext);
+                _auditer = auditer;
                 _cosmosDbService = cosmosDbService;
-                _validator = validator; // Injected validator
             }
 
             async Task<Response> IRequestHandler<Request, Response>.Handle(Request request, CancellationToken cancellationToken)
@@ -60,11 +56,11 @@ namespace Claims.Services.Claims
 
                 if (
                     validationResult.IsValid && relatedCover != null &&
-                   (DateOnly.FromDateTime(request.Created) < relatedCover.StartDate ||
-                    DateOnly.FromDateTime(request.Created) > relatedCover.EndDate)
+                   (DateOnly.FromDateTime(DateTime.UtcNow) < relatedCover.StartDate ||
+                    DateOnly.FromDateTime(DateTime.UtcNow) > relatedCover.EndDate)
                     )
                 {
-                    throw new FluentValidation.ValidationException(validationResult.Errors);
+                    //throw new FluentValidation.ValidationException("Created date must be within the period of the related Cover");
                 }
 
                 var claim = new Claim()
@@ -76,8 +72,7 @@ namespace Claims.Services.Claims
                 };
 
                 await _cosmosDbService.AddItemAsync<Claim>(claim, claim.Id);
-                _auditer.AuditClaim(claim.Id, "POST");
-
+                //await _auditer.AuditClaim(claim.Id, "POST");
 
                 return new Response()
                 {

@@ -21,18 +21,18 @@ namespace Claims.Services.Covers
         public class Handle : IRequestHandler<Request, Response>
         {
             private readonly Container _container;
-            private readonly Auditer _auditer;
+            private readonly IAuditer _auditer;
 
-            public Handle(CosmosClient cosmosClient, AuditContext auditContext)
+            public Handle(CosmosClient cosmosClient, IAuditer auditer)
             {
-                _auditer = new Auditer(auditContext);
+                _auditer = auditer;
                 _container = cosmosClient?.GetContainer("ClaimDb", "Cover")
                      ?? throw new ArgumentNullException(nameof(cosmosClient));
             }
 
             async Task<Response> IRequestHandler<Request, Response>.Handle(Request request, CancellationToken cancellationToken)
             {
-                _auditer.AuditCover(request.Id, "DELETE");
+                await _auditer.AuditCover(request.Id, "DELETE");
                 await _container.DeleteItemAsync<Cover>(request.Id, new(request.Id));
 
                 return new Response();

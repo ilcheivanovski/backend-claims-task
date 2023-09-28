@@ -63,11 +63,11 @@ namespace Claims.Services.Covers
         public class Handle : IRequestHandler<Request, Response>
         {
             private readonly Container _container;
-            private readonly Auditer _auditer;
+            private readonly IAuditer _auditer;
 
-            public Handle(CosmosClient cosmosClient, AuditContext auditContext)
+            public Handle(CosmosClient cosmosClient, IAuditer auditer)
             {
-                _auditer = new Auditer(auditContext);
+                _auditer = auditer;
                 _container = cosmosClient?.GetContainer("ClaimDb", "Cover") // GET COVER IN CONSTS
                      ?? throw new ArgumentNullException(nameof(cosmosClient));
             }
@@ -82,7 +82,7 @@ namespace Claims.Services.Covers
                     Premium = request.Premium,
                 };
                 await _container.CreateItemAsync<Cover>(cover, new PartitionKey(cover.Id));
-                _auditer.AuditCover(cover.Id, "POST");
+                await _auditer.AuditCover(cover.Id, "POST");
 
                 return new Response()
                 {

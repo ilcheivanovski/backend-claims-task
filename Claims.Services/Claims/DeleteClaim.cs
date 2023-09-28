@@ -20,17 +20,17 @@ namespace Claims.Services.Covers
         public class Handle : IRequestHandler<Request, Response>
         {
             private readonly ICosmosDbService _cosmosDbService;
-            private readonly Auditer _auditer;
+            private readonly IAuditer _auditer;
 
-            public Handle(AuditContext auditContext, ICosmosDbService cosmosDbService)
+            public Handle(ICosmosDbService cosmosDbService, IAuditer auditer)
             {
-                _auditer = new Auditer(auditContext);
+                _auditer = auditer;
                 _cosmosDbService = cosmosDbService;
             }
 
             async Task<Response> IRequestHandler<Request, Response>.Handle(Request request, CancellationToken cancellationToken)
             {
-                _auditer.AuditClaim(request.Id, "DELETE");
+                await _auditer.AuditClaim(request.Id, "DELETE");
                 await _cosmosDbService.DeleteItemAsync<Claim>(request.Id);
 
                 return new Response();

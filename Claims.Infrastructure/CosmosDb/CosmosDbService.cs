@@ -60,16 +60,16 @@ namespace Claims.Infrastructure.CosmosDb
         }
 
 
-        public Task AddItemAsync<T>(T item, string id)
+        public async Task<T> AddItemAsync<T>(T item, string id)
         {
             if (_container == null) InitContainer<T>();
-            return _container.CreateItemAsync(item, new PartitionKey(id));
+            return await _container.CreateItemAsync(item, new PartitionKey(id));
         }
 
-        public Task DeleteItemAsync<T>(string id)
+        public async Task  DeleteItemAsync<T>(string id)
         {
             if (_container == null) InitContainer<T>();
-            return _container.DeleteItemAsync<Claim>(id, new PartitionKey(id));
+             await _container.DeleteItemAsync<Claim>(id, new PartitionKey(id));
         }
     }
 }

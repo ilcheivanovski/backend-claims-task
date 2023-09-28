@@ -24,33 +24,50 @@ public class Cover
 
     public static decimal ComputePremium(DateOnly startDate, DateOnly endDate, CoverType coverType)
     {
-        var multiplier = 1.3m;
-        if (coverType == CoverType.Yacht)
-        {
-            multiplier = 1.1m;
-        }
+        decimal multiplier = 1;
 
-        if (coverType == CoverType.PassengerShip)
+        switch (coverType)
         {
-            multiplier = 1.2m;
-        }
-
-        if (coverType == CoverType.Tanker)
-        {
-            multiplier = 1.5m;
+            case CoverType.Yacht:
+                multiplier = 1.1m; // 10%
+                break;
+            case CoverType.PassengerShip:
+                multiplier = 1.2m; // 20%
+                break;
+            case CoverType.Tanker:
+                multiplier = 1.5m; // 50%
+                break;
+            default:
+                multiplier = 1.3m; // 30%
+                break;
         }
 
         var premiumPerDay = 1250 * multiplier;
-        var insuranceLength = endDate.DayNumber - startDate.DayNumber;
+        var insuranceDurationInDays = endDate.DayNumber - startDate.DayNumber;
         var totalPremium = 0m;
 
-        for (var i = 0; i < insuranceLength; i++)
+        for (var i = 0; i < insuranceDurationInDays; i++)
         {
-            if (i < 30) totalPremium += premiumPerDay;
-            if (i < 180 && coverType == CoverType.Yacht) totalPremium += premiumPerDay - premiumPerDay * 0.05m;
-            else if (i < 180) totalPremium += premiumPerDay - premiumPerDay * 0.02m;
-            if (i < 365 && coverType != CoverType.Yacht) totalPremium += premiumPerDay - premiumPerDay * 0.03m;
-            else if (i < 365) totalPremium += premiumPerDay - premiumPerDay * 0.08m;
+            if (i < 30)
+            {
+                totalPremium += premiumPerDay;
+            }
+            if (i >= 30 && i < 180 && coverType == CoverType.Yacht)
+            {
+                totalPremium += premiumPerDay - premiumPerDay * 0.05m;
+            }
+            else if (i < 180)
+            {
+                totalPremium += premiumPerDay - premiumPerDay * 0.02m;
+            }
+            if (i < 365 && coverType != CoverType.Yacht)
+            {
+                totalPremium += premiumPerDay - premiumPerDay * 0.03m;
+            }
+            else if (i < 365)
+            {
+                totalPremium += premiumPerDay - premiumPerDay * 0.08m;
+            }
         }
 
         return totalPremium;

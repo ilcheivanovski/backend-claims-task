@@ -41,7 +41,9 @@ public partial class Program
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateClaim>());
 
         builder.Services.AddValidatorsFromAssemblyContaining<CreateClaim.Validator>();
+
         builder.Services.AddDbContext<AuditContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddTransient<IAuditer, Auditer>();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
