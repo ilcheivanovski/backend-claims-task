@@ -1,3 +1,4 @@
+using Claims.Core;
 using Claims.Services.Covers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,6 @@ public class CoversController : ControllerBase
     {
         _mediator = mediator;
     }
-
-    // TODO
-    //[HttpPost]
-    //public ActionResult ComputePremiumAsync(DateOnly startDate, DateOnly endDate, CoverType coverType)
-    //{
-    //    return Ok(Cover.ComputePremium(startDate, endDate, coverType));
-    //}
 
     [HttpGet]
     public async Task<GetAllCovers.Response> GetAllCovers()
@@ -46,5 +40,13 @@ public class CoversController : ControllerBase
     {
         var request = new DeleteCover.Request() { Id = id };
         return await _mediator.Send(request);
+    }
+
+    [HttpGet("/getCoverTypes")]
+    public List<CoverType> GetCoverTypes()
+    {
+        return Enum.GetValues(typeof(CoverType))
+                                    .Cast<CoverType>()
+                                    .ToList();
     }
 }

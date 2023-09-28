@@ -1,3 +1,4 @@
+using Claims.Core;
 using Claims.Services.Claims;
 using Claims.Services.Covers;
 using MediatR;
@@ -38,6 +39,14 @@ namespace Claims.Controllers
         public Task<GetClaim.Response> GetClaim(string id)
         {
             return _mediator.Send(new GetClaim.Request() { Id = id });
+        }
+
+        [HttpGet("/getClaimTypes")]
+        public List<ClaimType> GetClaimTypes()
+        {
+            return Enum.GetValues(typeof(ClaimType))
+                                        .Cast<ClaimType>()
+                                        .ToList();
         }
     }
 }
