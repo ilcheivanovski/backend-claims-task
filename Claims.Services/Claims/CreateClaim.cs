@@ -63,13 +63,8 @@ namespace Claims.Services.Claims
                     //throw new FluentValidation.ValidationException("Created date must be within the period of the related Cover");
                 }
 
-                var claim = new Claim()
-                {
-                    CoverId = request.CoverId,
-                    Name = request.Name,
-                    Type = request.Type,
-                    DamageCost = request.DamageCost,
-                };
+                var claim = new Claim();
+                claim.Add(request.CoverId, request.Name, request.Type, request.DamageCost);
 
                 await _cosmosDbService.AddItemAsync<Claim>(claim, claim.Id);
                 //await _auditer.AuditClaim(claim.Id, "POST");
