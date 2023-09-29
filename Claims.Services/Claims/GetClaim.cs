@@ -1,7 +1,6 @@
 ﻿using Claims.Core;
 using Claims.Infrastructure.CosmosDb;
 using MediatR;
-using Claim = Claims.Core.Claim;
 
 namespace Claims.Services.Claims
 {

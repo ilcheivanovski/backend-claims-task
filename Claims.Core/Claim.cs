@@ -6,25 +6,16 @@ namespace Claims.Core
     {
         public Claim()
         {
-
+            Id = Guid.NewGuid().ToString();
+            Created = DateTime.UtcNow;
         }
         [JsonProperty(PropertyName = "id")]
         public string Id { get; private set; }
-        public string CoverId { get; private set; }
+        public string CoverId { get; set; }
         public DateTime Created { get; private set; }
-        public string Name { get; private set; }
-        public ClaimType Type { get; private set; }
-        public decimal DamageCost { get; private set; }
-
-        public void Add(string coverId, string name, ClaimType type, decimal damageCost)
-        {
-            Id = Guid.NewGuid().ToString();
-            Created = DateTime.UtcNow;
-            CoverId = coverId;
-            Name = name;
-            Type = type;
-            DamageCost = damageCost;
-        }
+        public string Name { get; set; }
+        public ClaimType Type { get; set; }
+        public decimal DamageCost { get; set; }
     }
 
 

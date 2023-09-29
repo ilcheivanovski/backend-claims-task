@@ -2,7 +2,6 @@
 using Claims.Infrastructure.AuditContext;
 using MediatR;
 using Microsoft.Azure.Cosmos;
-using Newtonsoft.Json;
 
 namespace Claims.Services.Covers
 {

@@ -10,18 +10,11 @@ public class Cover
         Id = Guid.NewGuid().ToString();
     }
     [JsonProperty(PropertyName = "id")]
-    public string Id { get; private set; }
-    public DateOnly StartDate { get; private set; }
-    public DateOnly EndDate { get; private set; }
-    public CoverType Type { get; private set; }
+    public string Id { get; set; }
+    public DateOnly StartDate { get; set; }
+    public DateOnly EndDate { get; set; }
+    public CoverType Type { get; set; }
 
-    public void Add(DateOnly startDate, DateOnly endDate, CoverType type)
-    {
-        Id = Guid.NewGuid().ToString();
-        StartDate = startDate;
-        EndDate = endDate;
-        Type = type;
-    }
     public decimal Premium
     {
         get

@@ -33,7 +33,7 @@ namespace Claims.Infrastructure.CosmosDb
 
         public async Task<IEnumerable<T>> GetAllItemsAsync<T>()
         {
-            if (_container == null) InitContainer<T>();
+            InitContainer<T>();
             var query = _container.GetItemQueryIterator<T>(new QueryDefinition("SELECT * FROM c"));
             var results = new List<T>();
             while (query.HasMoreResults)
@@ -49,7 +49,7 @@ namespace Claims.Infrastructure.CosmosDb
         {
             try
             {
-                if (_container == null) InitContainer<T>();
+                InitContainer<T>();
                 var response = await _container.ReadItemAsync<T>(id, new PartitionKey(id));
                 return response.Resource;
             }
@@ -62,14 +62,14 @@ namespace Claims.Infrastructure.CosmosDb
 
         public async Task<T> AddItemAsync<T>(T item, string id)
         {
-            if (_container == null) InitContainer<T>();
+            InitContainer<T>();
             return await _container.CreateItemAsync(item, new PartitionKey(id));
         }
 
-        public async Task  DeleteItemAsync<T>(string id)
+        public async Task DeleteItemAsync<T>(string id)
         {
-            if (_container == null) InitContainer<T>();
-             await _container.DeleteItemAsync<Claim>(id, new PartitionKey(id));
+            InitContainer<T>();
+            await _container.DeleteItemAsync<Claim>(id, new PartitionKey(id));
         }
     }
 }

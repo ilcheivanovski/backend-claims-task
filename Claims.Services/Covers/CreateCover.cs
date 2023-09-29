@@ -74,8 +74,12 @@ namespace Claims.Services.Covers
 
             async Task<Response> IRequestHandler<Request, Response>.Handle(Request request, CancellationToken cancellationToken)
             {
-                var cover = new Cover();
-                cover.Add(DateOnly.FromDateTime(request.StartDate), DateOnly.FromDateTime(request.EndDate), request.Type);
+                var cover = new Cover()
+                {
+                    StartDate = DateOnly.FromDateTime(request.StartDate),
+                    EndDate = DateOnly.FromDateTime(request.EndDate),
+                    Type = request.Type,
+                };
 
                 await _container.CreateItemAsync<Cover>(cover, new PartitionKey(cover.Id));
                 await _auditer.AuditCover(cover.Id, "POST");
