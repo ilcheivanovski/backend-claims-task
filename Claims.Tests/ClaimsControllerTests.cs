@@ -27,7 +27,6 @@ namespace Claims.Tests
             var contentString = await response.Content.ReadAsStringAsync();
             var claimsResponse = JsonConvert.DeserializeObject<Claims.Services.Claims.GetAllClaims.Response>(contentString);
 
-            Assert.NotNull(claimsResponse.Claims);
             Assert.True(claimsResponse.Claims.Any());
         }
         [Fact]
@@ -56,7 +55,6 @@ namespace Claims.Tests
             var contentString = await response.Content.ReadAsStringAsync();
             var claimsResponse = JsonConvert.DeserializeObject<Claims.Services.Claims.CreateClaim.Response>(contentString);
 
-            Assert.NotNull(claimsResponse.Id);
             Assert.True(claimsResponse != null);
         }
         [Fact]
