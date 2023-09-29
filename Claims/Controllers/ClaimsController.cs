@@ -3,7 +3,7 @@ using Claims.Services.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Claims.Controllers
+namespace Claims.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

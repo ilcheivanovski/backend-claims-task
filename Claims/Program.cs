@@ -33,6 +33,7 @@ public partial class Program
         });
 
         builder.Services.AddSingleton(GetCosmosClient(builder.Configuration.GetSection("CosmosDb")));
+#pragma warning disable CS8634
         builder.Services.AddSingleton(builder.Configuration.GetSection("CosmosDb").Get<CosmosDbSettings>());
 
         builder.Services.AddTransient<ICosmosDbService, CosmosDbService>();
@@ -50,7 +51,9 @@ public partial class Program
         builder.Services.AddSwaggerGen(c =>
         {
             // https://github.com/swagger-api/swagger-ui/issues/7911
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             c.CustomSchemaIds(s => s.FullName.Replace("+", "."));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         });
 
         var app = builder.Build();

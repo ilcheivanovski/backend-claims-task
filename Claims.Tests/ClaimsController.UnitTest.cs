@@ -1,4 +1,4 @@
-﻿using Claims.Controllers;
+﻿using Claims.Api.Controllers;
 using Claims.Core;
 using Claims.Services.Claims;
 using MediatR;

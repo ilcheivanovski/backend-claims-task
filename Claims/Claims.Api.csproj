@@ -19,8 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Claims.Core\Claims.Core.csproj" />
-    <ProjectReference Include="..\Claims.Infrastructure\Claims.Infrastructure.csproj" />
     <ProjectReference Include="..\Claims.Services\Claims.Services.csproj" />
   </ItemGroup>
 
