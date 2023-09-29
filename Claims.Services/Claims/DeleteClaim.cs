@@ -3,7 +3,7 @@ using Claims.Infrastructure.AuditContext;
 using Claims.Infrastructure.CosmosDb;
 using MediatR;
 
-namespace Claims.Services.Covers
+namespace Claims.Services.Claims
 {
     public class DeleteClaim
     {
