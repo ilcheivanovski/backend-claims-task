@@ -60,14 +60,17 @@ public class Cover
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.05m;
             }
+
             else if (i < 180)
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.02m;
             }
+
             else if (i < 365 && coverType == CoverType.Yacht)
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.03m;
             }
+
             else if (i < 365)
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.01m;
