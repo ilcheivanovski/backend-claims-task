@@ -28,7 +28,7 @@ namespace Claims.Services.Covers
                 RuleFor(x => new { x.StartDate, x.EndDate })
                               .NotEmpty() // Ensure StartDate is not empty
                               .Must(x => BeWithinOneYearRange(x.StartDate, x.EndDate)) // Custom validation method
-                              .WithMessage("Start Date must be within one year of End Date");
+                              .WithMessage("End Date must be within one year of End Date");
 
             }
         }
