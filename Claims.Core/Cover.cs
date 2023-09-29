@@ -27,6 +27,7 @@ public class Cover
     public static decimal ComputePremium(DateOnly startDate, DateOnly endDate, CoverType coverType)
     {
         decimal multiplier = 1;
+        int baseDateRate = 1250;
 
         switch (coverType)
         {
@@ -44,7 +45,7 @@ public class Cover
                 break;
         }
 
-        var premiumPerDay = 1250 * multiplier;
+        var premiumPerDay = baseDateRate * multiplier;
         var insuranceDurationInDays = endDate.DayNumber - startDate.DayNumber;
         var totalPremium = 0m;
 
@@ -54,7 +55,8 @@ public class Cover
             {
                 totalPremium += premiumPerDay;
             }
-            if (i >= 30 && i < 180 && coverType == CoverType.Yacht)
+
+            else if (i < 180 && coverType == CoverType.Yacht)
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.05m;
             }
@@ -62,13 +64,13 @@ public class Cover
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.02m;
             }
-            if (i < 365 && coverType != CoverType.Yacht)
+            else if (i < 365 && coverType == CoverType.Yacht)
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.03m;
             }
             else if (i < 365)
             {
-                totalPremium += premiumPerDay - premiumPerDay * 0.08m;
+                totalPremium += premiumPerDay - premiumPerDay * 0.01m;
             }
         }
 
